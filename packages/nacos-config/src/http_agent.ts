@@ -182,13 +182,11 @@ export class HttpAgent {
           case HTTP_NOT_FOUND:
             return null;
           case HTTP_CONFLICT:
-            await this.serverListMgr.updateCurrentServer(unit);
             // JAVA 在外面业务类处理的这个逻辑，应该是需要重试的
             lastErr = new Error(`[Client Worker] ${this.loggerDomain} server config being modified concurrently, data: ${JSON.stringify(data)}`);
             lastErr.name = `${this.loggerDomain}ServerConflictError`;
             break;
           default:
-            await this.serverListMgr.updateCurrentServer(unit);
             // JAVA 还有一个针对 HTTP_FORBIDDEN 的处理，不过合并到 default 应该也没问题
             lastErr = new Error(`${this.loggerDomain} Server Error Status: ${res.status}, url: ${url}, data: ${JSON.stringify(data)}`);
             lastErr.name = `${this.loggerDomain}ServerResponseError`;
@@ -204,6 +202,8 @@ export class HttpAgent {
         err.headers = headers;
         lastErr = err;
       }
+
+      await this.serverListMgr.updateCurrentServer(unit);
 
     } while (Date.now() < endTime);
 
