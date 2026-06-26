@@ -15,6 +15,12 @@
  * limitations under the License.
  */
 
-export * from 'nacos-config';
-export * from 'nacos-naming';
-export * from 'nacos-common';
+export { NacosNamingClient } from './naming/client';
+export { Instance } from './naming/instance';
+export { NamingProxy } from './naming/proxy';
+export { GrpcNamingProxy } from './naming/grpc_proxy';
+export { HostReactor } from './naming/host_reactor';
+export { BeatReactor } from './naming/beat_reactor';
+export { PushReceiver } from './naming/push_receiver';
+export { ServiceInfo } from './naming/service_info';
+export * from './interface';
